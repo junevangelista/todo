@@ -25,11 +25,11 @@ export default {
 
   methods: {
     toggleDoneTodo(id) {
-      this.$store.commit("toggleDoneTodo", id);
+      this.$store.commit("TOGGLE_DONE_TODO", id);
     },
 
     deleteTodo(id) {
-      this.$store.commit("deleteTodo", id);
+      this.$store.dispatch("deleteTodo", id);
     },
   },
 };

@@ -14,6 +14,7 @@ export default new Vuex.Store({
     snackbar: {
       show: false,
       text: "",
+      timeout: 5000,
     },
   },
   mutations: {
@@ -27,7 +28,7 @@ export default new Vuex.Store({
       state.todos.push(newTodo);
     },
 
-    toggleDoneTodo(state, payload) {
+    TOGGLE_DONE_TODO(state, payload) {
       const index = state.todos.findIndex((todo) => {
         return todo.id === payload;
       });
@@ -35,30 +36,49 @@ export default new Vuex.Store({
       state.todos[index].done = !state.todos[index].done;
     },
 
-    deleteTodo(state, payload) {
+    DELETE_TODO(state, payload) {
       state.todos = state.todos.filter((todo) => {
         return todo.id !== payload;
       });
-    },
-
-    hideSnackbar(state) {
-      state.snackbar = {
-        show: false,
-        text: "",
-      };
     },
 
     SHOW_SNACKBAR(state, payload) {
       state.snackbar = {
         show: true,
         text: payload,
+        timeout: 5000,
+      };
+    },
+
+    HIDE_SNACKBAR(state) {
+      state.snackbar = {
+        show: false,
+        text: "",
+        timeout: 0,
       };
     },
   },
   actions: {
     addTodo({ commit }, id) {
-      commit("ADD_TODO", id);
-      commit("SHOW_SNACKBAR", "Todo added!");
+      // clear snackbar before showing
+      commit("HIDE_SNACKBAR");
+
+      // wait for snackbar to be hidden
+      Vue.nextTick(() => {
+        commit("ADD_TODO", id);
+        commit("SHOW_SNACKBAR", "Task added!");
+      });
+    },
+
+    deleteTodo({ commit }, id) {
+      // clear snackbar before showing
+      commit("HIDE_SNACKBAR");
+
+      // wait for snackbar to be hidden
+      Vue.nextTick(() => {
+        commit("DELETE_TODO", id);
+        commit("SHOW_SNACKBAR", "Task deleted!");
+      });
     },
   },
   modules: {},

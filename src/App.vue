@@ -54,7 +54,7 @@
       <router-view></router-view>
     </v-main>
 
-    <snackbar v-if="snackbar.show" :text="snackbar.text"></snackbar>
+    <snackbar></snackbar>
   </v-app>
 </template>
 
@@ -75,11 +75,5 @@ export default {
       { title: "About", icon: "mdi-help-box", url: "/about" },
     ],
   }),
-
-  computed: {
-    snackbar() {
-      return this.$store.state.snackbar;
-    },
-  },
 };
 </script>

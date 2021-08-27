@@ -1,6 +1,6 @@
 <template>
-  <v-snackbar :value="true">
-    {{ text }}
+  <v-snackbar :value="snackbar.show" :timeout="snackbar.timeout">
+    {{ snackbar.text }}
 
     <template v-slot:action="{ attrs }">
       <v-btn text v-bind="attrs" @click="hideSnackbar"> Close </v-btn>
@@ -10,13 +10,15 @@
 
 <script>
 export default {
-  props: {
-    text: String,
+  computed: {
+    snackbar() {
+      return this.$store.state.snackbar;
+    },
   },
 
   methods: {
     hideSnackbar() {
-      this.$store.commit("hideSnackbar");
+      this.$store.commit("HIDE_SNACKBAR");
     },
   },
 };
