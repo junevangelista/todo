@@ -5,11 +5,15 @@
     hide-details
     clearable
     label="Add Todo"
-    append-icon="mdi-plus"
     class="pa-3"
-    @click:append="addTodo"
     @keyup.enter="addTodo"
-  ></v-text-field>
+  >
+    <template v-slot:append>
+      <v-icon color="primary" :disabled="!newTodo" @click="addTodo"
+        >mdi-plus</v-icon
+      >
+    </template>
+  </v-text-field>
 </template>
 
 <script>
@@ -22,8 +26,10 @@ export default {
 
   methods: {
     addTodo() {
-      this.$store.dispatch("addTodo", this.newTodo);
-      this.newTodo = "";
+      if (this.newTodo) {
+        this.$store.dispatch("addTodo", this.newTodo);
+        this.newTodo = "";
+      }
     },
   },
 };

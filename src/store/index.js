@@ -28,6 +28,14 @@ export default new Vuex.Store({
       state.todos.push(newTodo);
     },
 
+    UPDATE_TODO(state, payload) {
+      const index = state.todos.findIndex((todo) => {
+        return todo.id === payload.id;
+      });
+
+      state.todos[index] = Object.assign(state.todos[index], payload);
+    },
+
     TOGGLE_DONE_TODO(state, payload) {
       const index = state.todos.findIndex((todo) => {
         return todo.id === payload;
@@ -67,6 +75,15 @@ export default new Vuex.Store({
       Vue.nextTick(() => {
         commit("ADD_TODO", id);
         commit("SHOW_SNACKBAR", "Task added!");
+      });
+    },
+
+    updateTodo({ commit }, data) {
+      commit("HIDE_SNACKBAR");
+
+      Vue.nextTick(() => {
+        commit("UPDATE_TODO", data);
+        commit("SHOW_SNACKBAR", "Task updated!");
       });
     },
 

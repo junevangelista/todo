@@ -17,23 +17,33 @@
         </v-list-item-content>
 
         <v-list-item-action>
-          <todo-menu></todo-menu>
+          <TodoListItemMenu
+            @update:item="showEditDialog"
+            @delete:item="showDeleteDialog"
+          />
           <!-- <v-btn icon @click.stop="confirmDelete(todo.id)">
             <v-icon color="red lighten-1">mdi-delete</v-icon>
           </v-btn> -->
         </v-list-item-action>
       </template>
     </v-list-item>
-    <dialog-delete
+    <DialogEdit
+      v-if="dialogs.edit"
+      :todo="todo"
+      @on-update="onUpdate"
+      @cancel-update="cancelUpdate"
+    />
+    <DialogDelete
       v-if="dialogs.delete"
-      @on-delete="deleteTodo"
+      @on-delete="onDelete"
       @cancel-delete="cancelDelete"
-    ></dialog-delete>
+    />
   </div>
 </template>
 
 <script>
-import TodoMenu from "./TodoMenu.vue";
+import TodoListItemMenu from "./TodoListItemMenu.vue";
+import DialogEdit from "../Dialog/DialogEdit.vue";
 import DialogDelete from "../Dialog/DialogDelete.vue";
 
 export default {
@@ -42,33 +52,53 @@ export default {
   },
 
   components: {
-    TodoMenu,
+    TodoListItemMenu,
+    DialogEdit,
     DialogDelete,
   },
 
   data() {
     return {
       dialogs: {
+        edit: false,
         delete: false,
       },
     };
   },
 
   methods: {
+    showEditDialog() {
+      this.dialogs.edit = true;
+    },
+
+    showDeleteDialog() {
+      this.dialogs.delete = true;
+    },
+
     toggleDoneTodo(id) {
       this.$emit("toggle-done-todo", id);
     },
 
-    confirmDelete() {
-      this.dialogs.delete = true;
+    cancelUpdate() {
+      this.dialogs.edit = false;
     },
 
     cancelDelete() {
       this.dialogs.delete = false;
     },
 
-    deleteTodo() {
-      this.$emit("delete-todo", this.todo.id);
+    onDelete() {
+      this.$emit("delete:item", this.todo.id);
+    },
+
+    onUpdate(title) {
+      const data = {
+        id: this.todo.id,
+        title,
+      };
+      this.$emit("update:item", data);
+
+      this.dialogs.edit = false;
     },
   },
 };
