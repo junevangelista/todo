@@ -6,9 +6,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     todos: [
-      { id: 1, title: "Wake up", done: true },
-      { id: 2, title: "Get bananas", done: false },
-      { id: 3, title: "Eat bananas", done: false },
+      { id: 1, title: "Wake up", done: true, dueDate: "2021-09-03" },
+      { id: 2, title: "Get bananas", done: false, dueDate: "" },
+      { id: 3, title: "Eat bananas", done: false, dueDate: "2021-09-04" },
     ],
 
     snackbar: {
@@ -79,6 +79,16 @@ export default new Vuex.Store({
     },
 
     updateTodo({ commit }, data) {
+      commit("HIDE_SNACKBAR");
+
+      Vue.nextTick(() => {
+        commit("UPDATE_TODO", data);
+        commit("SHOW_SNACKBAR", "Task updated!");
+      });
+    },
+
+    datePicked({ commit }, data) {
+      // clear snackbar before showing
       commit("HIDE_SNACKBAR");
 
       Vue.nextTick(() => {

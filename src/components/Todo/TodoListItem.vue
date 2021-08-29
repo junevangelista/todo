@@ -16,27 +16,38 @@
           >
         </v-list-item-content>
 
+        <v-list-item-action v-if="todo.dueDate">
+          <v-list-item-action-text
+            ><v-icon prop>mdi-calendar</v-icon>
+            {{ todo.dueDate | formattedDate }}</v-list-item-action-text
+          >
+        </v-list-item-action>
+
         <v-list-item-action>
           <TodoListItemMenu
             @update:item="showEditDialog"
+            @dueDate:item="showDatePickerDialog"
             @delete:item="showDeleteDialog"
           />
-          <!-- <v-btn icon @click.stop="confirmDelete(todo.id)">
-            <v-icon color="red lighten-1">mdi-delete</v-icon>
-          </v-btn> -->
         </v-list-item-action>
       </template>
     </v-list-item>
     <DialogEdit
       v-if="dialogs.edit"
       :todo="todo"
-      @on-update="onUpdate"
-      @cancel-update="cancelUpdate"
+      @update:item="onUpdate"
+      @cancel="cancelUpdate"
+    />
+    <DialogDatePicker
+      v-if="dialogs.dueDate"
+      :date="todo.dueDate"
+      @date-picked="onDatePicked"
+      @cancel="cancelDatePicker"
     />
     <DialogDelete
       v-if="dialogs.delete"
-      @on-delete="onDelete"
-      @cancel-delete="cancelDelete"
+      @delete:item="onDelete"
+      @cancel="cancelDelete"
     />
   </div>
 </template>
@@ -44,7 +55,10 @@
 <script>
 import TodoListItemMenu from "./TodoListItemMenu.vue";
 import DialogEdit from "../Dialog/DialogEdit.vue";
+import DialogDatePicker from "../Dialog/DialogDatePicker.vue";
 import DialogDelete from "../Dialog/DialogDelete.vue";
+
+import { format } from "date-fns";
 
 export default {
   props: {
@@ -54,6 +68,7 @@ export default {
   components: {
     TodoListItemMenu,
     DialogEdit,
+    DialogDatePicker,
     DialogDelete,
   },
 
@@ -61,14 +76,25 @@ export default {
     return {
       dialogs: {
         edit: false,
+        dueDate: false,
         delete: false,
       },
     };
   },
 
+  filters: {
+    formattedDate(date) {
+      return format(new Date(date), "MMM d");
+    },
+  },
+
   methods: {
     showEditDialog() {
       this.dialogs.edit = true;
+    },
+
+    showDatePickerDialog() {
+      this.dialogs.dueDate = true;
     },
 
     showDeleteDialog() {
@@ -83,12 +109,12 @@ export default {
       this.dialogs.edit = false;
     },
 
-    cancelDelete() {
-      this.dialogs.delete = false;
+    cancelDatePicker() {
+      this.dialogs.dueDate = false;
     },
 
-    onDelete() {
-      this.$emit("delete:item", this.todo.id);
+    cancelDelete() {
+      this.dialogs.delete = false;
     },
 
     onUpdate(title) {
@@ -99,6 +125,20 @@ export default {
       this.$emit("update:item", data);
 
       this.dialogs.edit = false;
+    },
+
+    onDatePicked(date) {
+      const data = {
+        id: this.todo.id,
+        dueDate: date,
+      };
+      this.$emit("date-picked", data);
+
+      this.dialogs.dueDate = false;
+    },
+
+    onDelete() {
+      this.$emit("delete:item", this.todo.id);
     },
   },
 };

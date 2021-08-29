@@ -16,11 +16,11 @@
 export default {
   methods: {
     onDelete() {
-      this.$emit("on-delete");
+      this.$emit("delete:item");
     },
 
     cancelDelete() {
-      this.$emit("cancel-delete");
+      this.$emit("cancel");
     },
   },
 };

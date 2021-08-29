@@ -6,6 +6,7 @@
       :todo="todo"
       @toggle-done-todo="toggleDoneTodo"
       @update:item="updateTodo"
+      @date-picked="onDatePicked"
       @delete:item="deleteTodo"
     />
     <v-divider></v-divider>
@@ -31,6 +32,10 @@ export default {
 
     updateTodo(data) {
       this.$store.dispatch("updateTodo", data);
+    },
+
+    onDatePicked(data) {
+      this.$store.dispatch("datePicked", data);
     },
 
     deleteTodo(id) {

@@ -35,11 +35,11 @@ export default {
 
   methods: {
     onUpdate() {
-      this.$emit("on-update", this.title);
+      this.$emit("update:item", this.title);
     },
 
     cancelUpdate() {
-      this.$emit("cancel-update");
+      this.$emit("cancel");
     },
   },
 
