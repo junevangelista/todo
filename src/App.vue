@@ -4,7 +4,6 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="text-h6"> Vuetify Todo </v-list-item-title>
-          <v-list-item-subtitle> By Jun Evangelista </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 

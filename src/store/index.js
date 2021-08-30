@@ -6,9 +6,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     todos: [
-      { id: 1, title: "Wake up", done: true, dueDate: "2021-09-03" },
-      { id: 2, title: "Get bananas", done: false, dueDate: "" },
-      { id: 3, title: "Eat bananas", done: false, dueDate: "2021-09-04" },
+      { id: 1, title: "Buy grocery", done: true, dueDate: "2021-09-03" },
+      { id: 2, title: "Pay bills", done: false, dueDate: "" },
+      { id: 3, title: "Eat dinner", done: false, dueDate: "" },
     ],
 
     snackbar: {

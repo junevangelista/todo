@@ -102,7 +102,7 @@ export default {
     },
 
     toggleDoneTodo(id) {
-      this.$emit("toggle-done-todo", id);
+      this.$store.commit("TOGGLE_DONE_TODO", id);
     },
 
     cancelUpdate() {
@@ -122,7 +122,7 @@ export default {
         id: this.todo.id,
         title,
       };
-      this.$emit("update:item", data);
+      this.$store.dispatch("updateTodo", data);
 
       this.dialogs.edit = false;
     },
@@ -132,13 +132,13 @@ export default {
         id: this.todo.id,
         dueDate: date,
       };
-      this.$emit("date-picked", data);
+      this.$store.dispatch("datePicked", data);
 
       this.dialogs.dueDate = false;
     },
 
     onDelete() {
-      this.$emit("delete:item", this.todo.id);
+      this.$store.dispatch("deleteTodo", this.todo.id);
     },
   },
 };
