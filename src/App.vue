@@ -22,7 +22,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app color="primary" dark src="img/clouds.jpg">
+    <v-app-bar app color="primary" dark src="img/clouds.jpg" prominent>
       <template v-slot:img="{ props }">
         <v-img
           v-bind="props"
@@ -30,18 +30,23 @@
         ></v-img>
       </template>
 
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-container fluid>
+        <v-row>
+          <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+          <v-spacer></v-spacer>
+          <search v-if="search"></search>
+          <v-btn icon @click="toggleSearch"><v-icon>mdi-magnify</v-icon></v-btn>
+        </v-row>
 
-      <v-toolbar-title>Vuetify Todo</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
-      <search v-if="search"></search>
-      <v-btn icon @click="toggleSearch"><v-icon>mdi-magnify</v-icon></v-btn>
+        <v-toolbar-title class="mt-1">Vuetify Todo</v-toolbar-title>
+        <live-date-time></live-date-time>
+      </v-container>
     </v-app-bar>
 
     <v-main>
-      <router-view></router-view>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
     </v-main>
 
     <snackbar></snackbar>
@@ -51,6 +56,7 @@
 <script>
 import Snackbar from "./components/Utils/Snackbar.vue";
 import Search from "./components/Utils/Search.vue";
+import LiveDateTime from "./components/Utils/LiveDateTime.vue";
 
 export default {
   name: "App",
@@ -58,6 +64,7 @@ export default {
   components: {
     Snackbar,
     Search,
+    LiveDateTime,
   },
 
   data: () => ({
