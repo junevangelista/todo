@@ -36,17 +36,8 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+      <search v-if="search"></search>
+      <v-btn icon @click="toggleSearch"><v-icon>mdi-magnify</v-icon></v-btn>
     </v-app-bar>
 
     <v-main>
@@ -58,13 +49,15 @@
 </template>
 
 <script>
-import Snackbar from "./components/Snackbar.vue";
+import Snackbar from "./components/Utils/Snackbar.vue";
+import Search from "./components/Utils/Search.vue";
 
 export default {
   name: "App",
 
   components: {
     Snackbar,
+    Search,
   },
 
   data: () => ({
@@ -73,6 +66,13 @@ export default {
       { title: "Todo", icon: "mdi-format-list-checks", url: "/" },
       { title: "About", icon: "mdi-help-box", url: "/about" },
     ],
+    search: false,
   }),
+
+  methods: {
+    toggleSearch() {
+      this.search = !this.search;
+    },
+  },
 };
 </script>

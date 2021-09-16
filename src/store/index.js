@@ -11,12 +11,15 @@ export default new Vuex.Store({
       { id: 3, title: "Eat dinner", done: false, dueDate: "" },
     ],
 
+    search: null,
+
     snackbar: {
       show: false,
       text: "",
       timeout: 5000,
     },
   },
+
   mutations: {
     ADD_TODO(state, payload) {
       const newTodo = {
@@ -65,7 +68,12 @@ export default new Vuex.Store({
         timeout: 0,
       };
     },
+
+    SET_SEARCH(state, payload) {
+      state.search = payload;
+    },
   },
+
   actions: {
     addTodo({ commit }, id) {
       // clear snackbar before showing
@@ -108,5 +116,16 @@ export default new Vuex.Store({
       });
     },
   },
-  modules: {},
+
+  getters: {
+    filteredTodos(state) {
+      if (!state.search) {
+        return state.todos;
+      }
+
+      return state.todos.filter((todo) =>
+        todo.title.toLowerCase().includes(state.search.toLowerCase())
+      );
+    },
+  },
 });

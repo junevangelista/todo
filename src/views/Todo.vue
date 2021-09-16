@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 import TodoAddItem from "../components/Todo/TodoAddItem.vue";
 import TodoList from "../components/Todo/TodoList.vue";
 import TodoEmpty from "../components/Todo/TodoEmpty.vue";
@@ -20,9 +19,9 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      todos: (state) => state.todos,
-    }),
+    todos() {
+      return this.$store.getters.filteredTodos;
+    },
   },
 };
 </script>
